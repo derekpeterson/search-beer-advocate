@@ -5,6 +5,9 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
+def get_title(soup):
+	return soup.find('div', 'titleBar').text.strip()
+
 def get_similar(soup):
 	for item in soup.find_all('div', 'secondaryContent'):
 		if item.find('h3', text="Learn More"):
@@ -34,14 +37,26 @@ def get_reviews(soup):
 
 	return collection
 
-def main():
-	# URL = argv[1]
-	URL = "http://beeradvocate.com/beer/profile/1199/47658"
+def get_info(URL):
 	r = requests.get(URL)
 	soup = BeautifulSoup(r.text)
-	print json.dumps(get_similar(soup), indent=4)
-	print get_score(soup)
-	print json.dumps(get_reviews(soup), indent=4)
+	profile = {
+	'name': get_title(soup),
+	'url': URL,
+	'similar': get_similar(soup),
+	'score': get_score(soup),
+	'reviews': get_reviews(soup)
+	}
+	return profile
+
+def main():
+	# Supply a seed URL or comment the next line
+	# and uncomment the second line
+	URL = argv[1]
+	# URL = "http://beeradvocate.com/beer/profile/1199/47658"
+	seed = get_info(URL)
+	print json.dumps(seed, indent=4)
+	urls = [beer['url'] for beer in seed['similar']]
 
 if __name__ == '__main__':
 	main()
