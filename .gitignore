@@ -1,3 +1,7 @@
+.DS_STORE
+reviews.db
+reviews.dump.gz
+
 *.py[cod]
 
 # C extensions
