@@ -1,6 +1,6 @@
 .DS_STORE
-reviews.db
-reviews.dump.gz
+*.db
+*.dump.gz
 
 *.py[cod]
 
