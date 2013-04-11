@@ -2,8 +2,6 @@
 *.db
 *.dump.gz
 *.dump
-reviewindexer/index
-*.classpath
 
 *.py[cod]
 

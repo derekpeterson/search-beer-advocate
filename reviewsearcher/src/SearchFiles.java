@@ -37,6 +37,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+// @TODO: Take out the paging and move the whole she-bang to the main function
+
 /** Simple command-line based search demo. */
 public class SearchFiles {
 
@@ -51,8 +53,8 @@ public class SearchFiles {
 			System.exit(0);
 		}
 
-		String index = "index";
-		String field = "contents";
+		String index = "../index";
+		String field = "reviewtext";
 		String queries = null;
 		int repeat = 0;
 		boolean raw = false;
@@ -120,7 +122,7 @@ public class SearchFiles {
 			if (repeat > 0) {                           // repeat & time as benchmark
 				Date start = new Date();
 				for (int i = 0; i < repeat; i++) {
-					searcher.search(query, null, 100);
+					searcher.search(query, 100);
 				}
 				Date end = new Date();
 				System.out.println("Time: "+(end.getTime()-start.getTime())+"ms");
@@ -179,13 +181,10 @@ public class SearchFiles {
 				}
 
 				Document doc = searcher.doc(hits[i].doc);
-				String path = doc.get("path");
-				if (path != null) {
-					System.out.println((i+1) + ". " + path);
-					String title = doc.get("title");
-					if (title != null) {
-						System.out.println("   Title: " + doc.get("title"));
-					}
+				String id = doc.get("id");
+				if (id != null) {
+					String name = doc.get("name");
+					System.out.println((i+1) + ". " + id + (name != null ? " " + name : ""));
 				} else {
 					System.out.println((i+1) + ". " + "No path for this document");
 				}
